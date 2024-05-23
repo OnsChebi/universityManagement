@@ -1,26 +1,20 @@
-﻿
-@{
+﻿@{
     ViewData["isDashboard"] = true;
 }
 
 @*Summary Widgets*@
 <div class="row mb-4">
-
     <div class="col-md-4">
         <div class="d-flex flex-row widget summary Students">
-            
             <div class="d-flex flex-column m-auto py-3">
                 <span class="lead">Students</span>
-                <h1 class="display-6 fw-bold">@ViewBag.nbrStudent</h1>
+                <h1 class="display-6 fw-bold">@ViewBag.nbrStudents</h1>
             </div>
         </div>
     </div>
 
     <div class="col-md-4">
         <div class="d-flex flex-row widget summary Employee">
-            <div class="d-flex flex-column justify-content-center p-5">
-                <i class="fa-solid fa-dollar-sign fa-2xl"></i>
-            </div>
             <div class="d-flex flex-column m-auto py-3">
                 <span class="lead"> Employee</span>
                 <h1 class="display-6 fw-bold">@ViewBag.nbrEmployees</h1>
@@ -30,9 +24,7 @@
 
     <div class="col-md-4">
         <div class="d-flex flex-row widget summary persons">
-            <div class="d-flex flex-column justify-content-center p-5">
-                <i class="fa-solid fa-dollar-sign fa-2xl"></i>
-            </div>
+            
             <div class="d-flex flex-column m-auto py-3">
                 <span class="lead">Persons</span>
                 <h1 class="display-6 fw-bold">@ViewBag.Persons</h1>

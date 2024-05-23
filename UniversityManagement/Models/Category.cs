@@ -14,7 +14,7 @@ namespace UniversityManagement.Models
 
         
         [Column(TypeName = "nvarchar(10)")]
-        public string Type { get; set; } = "Employee";
+        public string Type { get; set; } = "Employees";
 
     }
 

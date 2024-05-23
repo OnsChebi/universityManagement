@@ -7,7 +7,6 @@ namespace UniversityManagement.Controllers
 {
     public class DashboardController : Controller
     {
-
         private readonly ApplicationDbContext _context;
 
         public DashboardController(ApplicationDbContext context)
@@ -27,83 +26,78 @@ namespace UniversityManagement.Controllers
                 .ToListAsync();
 
             //Total Students
-            int nbrStudents = SelectedPersons
-            .Count(i => i.Category.Type == "Students");
-            ViewBag.nbrStudents = nbrStudents.ToString("C0");
+            int nbrStudents = await _context.Persons
+                 .Where(p => p.Category.Type == "Students")
+                 .CountAsync();
+            ViewBag.nbrStudents = nbrStudents.ToString("N0");
+            //Total Employees
+            int nbrEmployees = await _context.Persons
+                .Where(p => p.Category.Type == "Empolyee")
+                .CountAsync();
+            ViewBag.nbrStudents = nbrStudents.ToString("N0");
 
-
-            //Total Employee
-            int nbrEmployees = SelectedPersons
-                .Count(i => i.Category.Type == "Employee");
-            ViewBag.nbrEmployees = nbrEmployees.ToString("C0");
-
-            //Persons
+            //Total Persons
             int Persons = nbrStudents + nbrEmployees;
-            CultureInfo culture = CultureInfo.CreateSpecificCulture("en-US");
-            culture.NumberFormat.CurrencyNegativePattern = 1;
-            ViewBag.Persons = String.Format(culture, "{0:C0}", Persons);
+            ViewBag.Persons = Persons;
 
-            //Doughnut Chart - Employee By Category
-            ViewBag.DoughnutChartData = SelectedPersons
-                .Where(i => i.Category.Type == "Students") // Change to "Student" to filter students
+            // Doughnut Chart - Students By Category
+            var doughnutChartData = SelectedPersons
+                .Where(i => i.Category.Type == "Students")
                 .GroupBy(j => j.Category.CategoryId)
                 .Select(k => new
                 {
                     categoryTitle = k.First().Category.PostOrClass,
-                    count = k.Count(), // Count the number of students in each category
-                    formattedCount = k.Count().ToString("N0"), // Format the count as a string with thousands separators
+                    nbrStudents = k.Count(),
                 })
-                .OrderByDescending(l => l.count) // Order by count in descending order
+                .OrderByDescending(l => l.nbrStudents)
                 .ToList();
+            ViewBag.DoughnutChartData = doughnutChartData;
 
-
-            //Spline Chart - Students vs Employee
-
-            //Students
-            List<SplineChartData> StudentsSummary = SelectedPersons
+            // Spline Chart - Students vs Employees
+            var studentsSummary = SelectedPersons
                 .Where(i => i.Category.Type == "Students")
                 .GroupBy(j => j.BirthDate)
-                .Select(k => new SplineChartData()
+                .Select(k => new SplineChartData
                 {
-                    day = k.First().BirthDate.ToString("dd-MMM"),
+                    Day = k.First().BirthDate.ToString("dd-MMM"),
                     Students = k.Count(),
                 })
                 .ToList();
 
-            //Employee
-            List<SplineChartData> EmployeeSummary = SelectedPersons
-                .Where(i => i.Category.Type == "Employee")
+            var employeesSummary = SelectedPersons
+                .Where(i => i.Category.Type == "Employees")
                 .GroupBy(j => j.BirthDate)
-                .Select(k => new SplineChartData()
+                .Select(k => new SplineChartData
                 {
-                    day = k.First().BirthDate.ToString("dd-MMM"),
+                    Day = k.First().BirthDate.ToString("dd-MMM"),
                     Employee = k.Count(),
                 })
                 .ToList();
 
-            //Combine Students & Employee
-            string[] Last7Days = Enumerable.Range(0, 7)
+            var last7Days = Enumerable.Range(0, 7)
                 .Select(i => StartDate.AddDays(i).ToString("dd-MMM"))
                 .ToArray();
 
-            ViewBag.SplineChartData = from day in Last7Days
-                                      join Students in StudentsSummary on day equals Students.day into dayStudentsJoined
-                                      from Students in dayStudentsJoined.DefaultIfEmpty()
-                                      join Employee in EmployeeSummary on day equals Employee.day into EmployeeJoined
-                                      from Employee in EmployeeJoined.DefaultIfEmpty()
-                                      select new
-                                      {
-                                          day = day,
-                                          Students = Students == null ? 0 : Students.Students,
-                                          Employee = Employee == null ? 0 : Employee.Employee,
-                                      };
-            //Recent Persons
-            ViewBag.RecentPersons = await _context.Persons
+            var splineChartData = from day in last7Days
+                                  join students in studentsSummary on day equals students.Day into dayStudentsJoined
+                                  from students in dayStudentsJoined.DefaultIfEmpty()
+                                  join employees in employeesSummary on day equals employees.Day into dayEmployeesJoined
+                                  from employees in dayEmployeesJoined.DefaultIfEmpty()
+                                  select new SplineChartData
+                                  {
+                                      Day = day,
+                                      Students = students?.Students ?? 0,
+                                      Employee = employees?.Employee ?? 0,
+                                  };
+            ViewBag.SplineChartData = splineChartData.ToList();
+
+            // Recent Persons
+            var recentPersons = await _context.Persons
                 .Include(i => i.Category)
                 .OrderByDescending(j => j.BirthDate)
                 .Take(5)
                 .ToListAsync();
-
+            ViewBag.RecentPersons = recentPersons;
 
             return View();
         }
@@ -111,9 +105,8 @@ namespace UniversityManagement.Controllers
 
     public class SplineChartData
     {
-        public string day;
-        public int Students;
-        public int Employee;
-
+        public string Day { get; set; }
+        public int Students { get; set; }
+        public int Employee { get; set; }
     }
 }
