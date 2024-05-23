@@ -15,6 +15,7 @@ namespace UniversityManagement.Controllers
         }
 
         // GET: Person
+        [HttpGet]
         public async Task<IActionResult> Index()
         {
             var applicationDbContext = _context.Persons.Include(t => t.Category);
@@ -22,6 +23,8 @@ namespace UniversityManagement.Controllers
         }
 
         // GET: Person/AddOrEdit
+        [HttpGet]
+
         public IActionResult AddOrEdit(int id = 0)
         {
             PopulateCategories();
@@ -33,6 +36,7 @@ namespace UniversityManagement.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+
         public async Task<IActionResult> AddOrEdit([Bind("PersonId,CategoryId,FullName,comment,BirthDate")] Person Person)
         {
             if (ModelState.IsValid)
@@ -51,6 +55,7 @@ namespace UniversityManagement.Controllers
         
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             if (_context.Persons == null)

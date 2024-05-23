@@ -1,0 +1,16 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\UniversityManagement",
+    "\\UniversityManagement\\bin",
+    "\\UniversityManagement\\bin\\Debug",
+    "\\UniversityManagement\\Controllers",
+    "\\UniversityManagement\\Migrations",
+    "\\UniversityManagement\\Properties",
+    "\\UniversityManagement\\Views",
+    "\\UniversityManagement\\Views\\Dashboard",
+    "\\UniversityManagement\\wwwroot"
+  ],
+  "SelectedNode": "\\UniversityManagement\\Views\\Dashboard\\Index.cshtml",
+  "PreviewInSolutionExplorer": false
+}
