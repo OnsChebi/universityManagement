@@ -1,0 +1,48 @@
+﻿@model UniversityManagement.Models.Person
+
+@{
+    ViewData["PageTitle"] = Model.PersonId == 0 ? "Create a new Person" : "Edit Person";
+}
+
+<div class="row">
+    <div class="col-md-7">
+        <div class="widget p-5" style="background-color:#212b36">
+            <form asp-action="AddOrEdit">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" name="PersonId" value="@Model.PersonId" />
+                <div class="mb-3">
+                    <ejs-textbox id="FullName" ejs-for="FullName"
+                                 placeholder="FullName" floatLabelType="Always"></ejs-textbox>
+                    <span asp-validation-for="FullName" class="text-danger fs-6"></span>
+                </div>
+
+                <div class="mb-3">
+                     <ejs-datepicker id="BirthDate" ejs-for="BirthDate"
+                    placeholder="mm-dd-yy" floatLabelType="Always"
+                    format="MMM-dd-yy" ></ejs-datepicker>
+                </div>
+                <div class="mb-3">
+                    <ejs-dropdownlist id="ddlCategory" ejs-for="CategoryId"
+                                      dataSource="@ViewBag.Categories" placeholder="Category"
+                                      floatLabelType="Always" allowFiltering="true" ignoreAccent="true"
+                                      filterType="Contains" popupHeight="220px">
+                        <e-dropdownlist-fields value="CategoryId" text="PostOrClass"></e-dropdownlist-fields>
+                    </ejs-dropdownlist>
+                    <span asp-validation-for="CategoryId" class="text-danger fs-6"></span>
+                </div>
+                <div class="mb-3">
+                    <ejs-textbox id="Comment" placeholder="Comment" ejs-for="Comment"
+                                 floatLabelType="Always" multiline="true"></ejs-textbox>
+                </div>
+                <ejs-button id="submit" type="submit" content="Submit" cssClass="e-success"></ejs-button>
+            </form>
+        </div>
+    </div>
+    <div class="col-md-5">
+        <div class="widget h-100 d-flex justify-content-center align-items-center">
+            <i class="fa-solid fa-money-bill-transfer fa-2xl"></i>
+        </div>
+    </div>
+</div>
+
+
