@@ -11,6 +11,6 @@
     "\\UniversityManagement\\Views\\Dashboard",
     "\\UniversityManagement\\wwwroot"
   ],
-  "SelectedNode": "\\UniversityManagement\\Views\\Dashboard\\Index.cshtml",
+  "SelectedNode": "\\UniversityManagement\\Controllers\\PersonController.cs",
   "PreviewInSolutionExplorer": false
 }

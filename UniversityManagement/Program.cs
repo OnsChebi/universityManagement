@@ -39,4 +39,10 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Access}/{action=Login}/{id?}");
 
+// Example: a route for the Dashboard controller
+app.MapControllerRoute(
+    name: "dashboard",
+    pattern: "Dashboard/{action=Index}/{id?}",
+    defaults: new { controller = "Dashboard", action = "Index" });
+
 app.Run();
