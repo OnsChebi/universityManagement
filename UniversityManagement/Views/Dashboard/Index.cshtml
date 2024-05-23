@@ -64,7 +64,7 @@
                     <ejs-grid id="recent-Persons"
                               dataSource="@ViewBag.RecentPersons" gridLines="None">
                         <e-grid-columns>
-                            <e-grid-column headerText="PostOrClass" field="PostOrClass"></e-grid-column>
+                            <e-grid-column headerText="PostOrClass" field="Category.PostOrClass"></e-grid-column>
                             <e-grid-column headerText="BirthDate" field="BirthDate" type="date" format="MMM-dd-yy"></e-grid-column>
                             <e-grid-column headerText="FullName" field="FullName" textAlign="Right"></e-grid-column>
                         </e-grid-columns>

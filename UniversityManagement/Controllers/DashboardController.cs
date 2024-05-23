@@ -71,6 +71,6 @@ namespace UniversityManagement.Controllers
     {
         public string Day { get; set; }
         public int Students { get; set; }
-        public int Employee { get; set; }
+        public int Employees { get; set; }
     }
 }
